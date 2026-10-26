@@ -1273,7 +1273,7 @@ for(var q_ in TM2)TM[q_]=TM2[q_];
 var TS2={mol:SEC2.MOL,gas:SEC2.GAS,sol:SEC2.SOL,eq:SEC2.EQ,kps:SEC2.KPS,ab:SEC2.AB,nom:SEC2.NOM,red:SEC2.RED,org:SEC2.ORG,el:SEC2.EL};
 for(var t_ in TS2)TSEC[t_]=TS2[t_];
 TT.kin=['Chemical kinetics (Whitten ch. 16)','<p><b>Chemical kinetics</b> studies how fast reactions go. The <b>rate of a reaction</b> is the change in concentration of a reactant or product per unit time (units M/s). The <b>rate-law expression</b> relates the rate to the concentrations: rate = <i>k</i>[A]<sup>x</sup>[B]<sup>y</sup>. The constant <i>k</i> is the <b>rate constant</b> at a given temperature, and the exponents x and y are the <b>orders</b> with respect to each reactant; their sum is the overall order. The orders are found by experiment and bear no necessary relationship to the coefficients of the balanced equation. With the <b>method of initial rates</b> you change one concentration at a time and compare the initial rates: if doubling [A] doubles the rate the order in A is 1, if it quadruples the rate the order is 2, if the rate does not change the order is 0. The units of <i>k</i> depend on the overall order: s<sup>−1</sup> (first), M<sup>−1</sup> s<sup>−1</sup> (second).</p><p>The rate law gives the rate from the concentrations; the <b>integrated rate equation</b> gives concentration as a function of time (Whitten Table 16-2, for aA → products with a = 1): first order ln([A]<sub>0</sub>/[A]) = <i>kt</i>, half-life 0.693/<i>k</i>; second order 1/[A] − 1/[A]<sub>0</sub> = <i>kt</i>, half-life 1/<i>k</i>[A]<sub>0</sub>. The <b>half-life</b> t<sub>1/2</sub> is the time for the concentration to fall to half. Only for a first-order reaction does it not depend on the initial concentration. Each plot is a straight line for one order: ln[A] versus t (first), 1/[A] versus t (second).</p><p><b>Temperature and catalysts.</b> The <b>Arrhenius equation</b> k = Ae<sup>−E<sub>a</sub>/RT</sup>, or ln <i>k</i> = ln A − E<sub>a</sub>/RT, shows that <i>k</i> grows with temperature and that the greater the <b>activation energy</b> E<sub>a</sub> the smaller <i>k</i>. A plot of ln <i>k</i> versus 1/T is a line of slope −E<sub>a</sub>/R. Subtracting the equation at two temperatures gives ln(<i>k</i><sub>2</sub>/<i>k</i><sub>1</sub>) = (E<sub>a</sub>/R)(1/T<sub>1</sub> − 1/T<sub>2</sub>), with T in kelvin, R = 8.314 J/(mol·K) and E<sub>a</sub> in J/mol. A <b>catalyst</b> speeds up a reaction by providing an alternative pathway with a lower activation energy; it takes part in the steps but is regenerated.</p>'];
-var TM3={krate:'kin',kinit:'kin',kfirst:'kin',khalf:'kin',ksecond:'kin',karr:'kin',kcon:'kin'};
+var TM3={krate:'kin',kinit:'kin',kfirst:'kin',khalf:'kin',ksecond:'kin',kcon:'kin'};
 for(var q3_ in TM3)TM[q3_]=TM3[q3_];
 TSEC.kin='Chemical kinetics';
 
@@ -1364,19 +1364,6 @@ reg(SKN,2,function(){
    'For second order t<sub>1/2</sub> = 1/(<i>k</i>[A]<sub>0</sub>) (Whitten Table 16-2) = 1 / ('+fmt(k)+' × '+fmt(A0)+') = '+fmt(h)+' s. Unlike first order, it depends on the initial concentration.',' s',KR);
 });
 reg(SKN,3,function(){
-  var Rg=8.314,T1=pick([298,300,310]),T2=T1+pick([10,20,25,40]),Ea=pick([40,50,60,75,90]),k1=pick([1.2e-3,4.5e-4,2.0e-2,6.0e-3]);
-  var k2=k1*Math.exp(Ea*1000/Rg*(1/T1-1/T2));
-  if(Math.random()<.5){
-    return nm(SKN,'karr','A reaction has activation energy E<sub>a</sub> = '+Ea+' kJ/mol. Its rate constant is '+fmt(k1)+' s<sup>−1</sup> at '+T1+' K. What is the rate constant at '+T2+' K? (R = 8.314 J/mol·K)',k2,
-     [k1*T2/T1,k1*Math.exp(-Ea*1000/Rg*(1/T1-1/T2)),k1*Math.exp(Ea/Rg*(1/T1-1/T2)),k1*Math.exp(Ea*1000/Rg*(T2-T1))],
-     'Subtracting the Arrhenius equations ln <i>k</i> = ln A − E<sub>a</sub>/RT at the two temperatures gives ln(<i>k</i><sub>2</sub>/<i>k</i><sub>1</sub>) = (E<sub>a</sub>/R)(1/T<sub>1</sub> − 1/T<sub>2</sub>). With E<sub>a</sub> in J/mol: = ('+(Ea*1000)+'/8.314) × (1/'+T1+' − 1/'+T2+') = '+fmt(Math.log(k2/k1))+', so <i>k</i><sub>2</sub> = '+fmt(k1)+' × e<sup>'+fmt(Math.log(k2/k1))+'</sup> = '+fmt(k2)+' s<sup>−1</sup>. A higher temperature gives a larger <i>k</i>.',' s<sup>−1</sup>',KR);
-  }
-  var k2r=Number(k2.toPrecision(3)),Eac=Rg*Math.log(k2r/k1)/(1/T1-1/T2)/1000;
-  return nm(SKN,'karr','The rate constant of a reaction is '+fmt(k1)+' s<sup>−1</sup> at '+T1+' K and '+fmt(k2r)+' s<sup>−1</sup> at '+T2+' K. What is the activation energy? (R = 8.314 J/mol·K)',Eac,
-   [Eac*1000,Rg*Math.log(k2r/k1)/(T2-T1)/1000,Math.log(k2r/k1)*0.08206/(1/T1-1/T2)/1000,Eac/2],
-   'ln(<i>k</i><sub>2</sub>/<i>k</i><sub>1</sub>) = (E<sub>a</sub>/R)(1/T<sub>1</sub> − 1/T<sub>2</sub>) (from the Arrhenius equation, Whitten §16-8), so E<sub>a</sub> = R·ln(<i>k</i><sub>2</sub>/<i>k</i><sub>1</sub>)/(1/T<sub>1</sub> − 1/T<sub>2</sub>) = 8.314 × '+fmt(Math.log(k2r/k1))+' / '+fmt(1/T1-1/T2)+' = '+fmt(Eac*1000)+' J/mol = '+fmt(Eac)+' kJ/mol.',' kJ/mol',KR);
-});
-reg(SKN,3,function(){
   var v=pick([1,2,3,4,5]);
   if(v===1){var n=pick([0,1]),u=['s<sup>−1</sup>','M<sup>−1</sup> s<sup>−1</sup>'];
     return mk(SKN,'kcon','What are the units of the rate constant <i>k</i> for a reaction that is '+['first order','second order'][n]+' overall (concentration in M, time in s)?',u[n],u.filter(function(x,i){return i!==n}).concat(['M s<sup>−1</sup>','M<sup>−2</sup> s<sup>−1</sup>']),
@@ -1396,7 +1383,6 @@ M.kinit=["Rate law from initial rates","Change one concentration at a time.",["P
 M.kfirst=["First-order concentration or time","Use the natural logarithm.",["ln([A]₀/[A]) = kt.","Concentration: [A] = [A]₀·e^(−kt).","Time: t = ln([A]₀/[A])/k (natural log, not log₁₀)."]];
 M.khalf=["Half-life","Match the order.",["First order: t½ = 0.693/k, independent of [A]₀.","Each half-life halves the amount: after n half-lives (½)ⁿ remains."]];
 M.ksecond=["Second-order reactions","1/[A] is linear in time.",["1/[A] − 1/[A]₀ = kt.","t½ = 1/(k[A]₀): depends on the initial concentration."]];
-M.karr=["Arrhenius equation, two temperatures","Temperatures in kelvin, Ea in J/mol.",["ln(k₂/k₁) = (Ea/R)(1/T₁ − 1/T₂), R = 8.314 J/(mol·K).","Convert Ea from kJ/mol to J/mol.","Higher T gives larger k."]];
 M.kcon=["Kinetics concept questions","Recall the table of orders.",["Table of orders: first ln[A] vs t; second 1/[A] vs t.","Catalysts lower Ea through an alternative pathway.","ln k vs 1/T has slope −Ea/R."]];
 
 /* ---------- BOOK CHECK: where the book says it (Whitten, Davis, Peck, Stanley, Chemistry 10th ed.) ---------- */
@@ -1482,7 +1468,6 @@ kinit:[['16-3'],'The method of initial rates finds the rate-law expression by ch
 kfirst:[['16-4'],'First order: ln([A]₀/[A]) = akt (Table 16-2), with a = 1 for A → products.'],
 khalf:[['16-4'],'First order: t½ = ln 2/(ak) = 0.693/(ak); the half-life does not depend on the initial concentration.'],
 ksecond:[['16-4'],'Second order: 1/[A] − 1/[A]₀ = akt; t½ = 1/(ak[A]₀).'],
-karr:[['16-8'],'Arrhenius equation: k = Ae^(−Ea/RT), or ln k = ln A − Ea/RT, with R = 8.314 J/(mol·K) when Ea is in J/mol; the greater Ea, the smaller k.'],
 kcon:[['16-3','16-4','16-8','16-9'],'Table 16-2 gives rate law, integrated equation and half-life for orders 0, 1 and 2; catalysts lower Ea through an alternative pathway (§16-9); ln k versus 1/T has slope −Ea/R (Figure 16-14).']
 };
 function bookHtml(x){var b=BK[x.t];if(!b)return'';var s=b[0].map(function(k){var e=BKS[k];return e?'§'+k+' '+e[0]+' (p. '+e[1]+')':''}).filter(Boolean).join('; ');
@@ -2037,7 +2022,7 @@ DG.ea=function(){var s='';
   s+=tx(172,72,T('catalyst:','catalizzatore:'),'tb','start',11)+tx(172,86,T('lower Ea','Ea più bassa'),'tb','start',11);
   s+=tx(34,136,T('reactants','reagenti'),'td','start',11)+tx(190,158,T('products','prodotti'),'td','middle',11);
   s+=axes(280,170,140,150,'1/T','ln k')+ln(292,52,412,132,'sn')+tx(362,66,T('slope','pendenza'),'tp','start',12)+tx(362,80,'= −Ea/R','tp','start',12)+tx(350,150,T('intercept = ln A','intercetta = ln A'),'td','middle',11);
-  return svgw('440 196',s,T('A catalyst opens a path with lower Ea: k grows, but ΔH and K do not change. Arrhenius: k = A·e^(−Ea/RT); ln k against 1/T is a line. Two temperatures: ln(k₂/k₁) = (Ea/R)(1/T₁ − 1/T₂), T in K, Ea in J/mol.','Un catalizzatore apre un percorso con Ea più bassa: k aumenta, ma ΔH e K non cambiano. Arrhenius: k = A·e^(−Ea/RT); ln k in funzione di 1/T è una retta. Due temperature: ln(k₂/k₁) = (Ea/R)(1/T₁ − 1/T₂), T in K, Ea in J/mol.'),T('Activation energy and Arrhenius plot','Energia di attivazione e grafico di Arrhenius'))};
+  return svgw('440 196',s,T('A catalyst opens a path with lower Ea: k grows, but ΔH and K do not change. Arrhenius: k = A·e^(−Ea/RT); ln k against 1/T is a line.','Un catalizzatore apre un percorso con Ea più bassa: k aumenta, ma ΔH e K non cambiano. Arrhenius: k = A·e^(−Ea/RT); ln k in funzione di 1/T è una retta.'),T('Activation energy and Arrhenius plot','Energia di attivazione e grafico di Arrhenius'))};
 /* equilibrium */
 DG.eq=function(){var s='';
   s+=axes(40,160,170,130,'t',T('conc.','conc.'));
@@ -2199,7 +2184,7 @@ DG.bal=function(){var s='';
   s+=tx(220,172,T('Balance the most complex species first, O and H last;','Bilancia prima la specie più complessa, O e H per ultimi;'),'td','middle',10.5)+tx(220,187,T('same number of each atom on both sides.','stesso numero di atomi di ogni elemento da entrambi i lati.'),'td','middle',10.5);
   return svgw('440 198',s,T('Never change a subscript to balance: only coefficients. Multiply the coefficient by the subscript to count atoms (2 KClO₃ → 6 O).','Mai cambiare un pedice per bilanciare: solo i coefficienti. Moltiplica il coefficiente per il pedice per contare gli atomi (2 KClO₃ → 6 O).'),T('Balancing a reaction','Bilanciare una reazione'))};
 
-var DGMAP={exp:'sym',part:'sym',sym:'sym',cmp:'sym',nuc:'sym',rule:'fill',qn:'orb',qnorb:'orb',cap:'orb',last:'fill',cfg:'fill',pos:'fill',unp:'fill',grp:'trend',trend:'trend',ie:'trend',def:'trend',ion:'trend',hyb:'vsepr',lew:'vsepr',mol1:'molemap',stoich:'molemap',pct:'molemap',conc:'dil',boyle:'gas',charles:'gas',ideal:'gas',gcon:'gas',colt:'phase',kexp:'eq',kcalc:'eq',kp:'eq',qk:'eq',lech:'eq',ksp:'ksp',prec:'ksp',common:'ksp',ph:'phs',hyd:'phs',strong:'phs',abth:'phs',titr:'titr',buf:'buf',bufph:'buf',conj:'buf',ox:'redox',agent:'redox',ecell:'cell',nernst:'cell',krate:'kplots',kinit:'kplots',kfirst:'kplots',khalf:'kplots',ksecond:'kplots',karr:'ea',kcon:'ea',ocis:'cis',avg:'avg',dalton:'dalton',nmf:'nom',nmw:'nom',oname:'oname',oform:'oform',rxn:'rxn',bal:'bal',isom:'isom',ofg:'fg',otype:'orx'};
+var DGMAP={exp:'sym',part:'sym',sym:'sym',cmp:'sym',nuc:'sym',rule:'fill',qn:'orb',qnorb:'orb',cap:'orb',last:'fill',cfg:'fill',pos:'fill',unp:'fill',grp:'trend',trend:'trend',ie:'trend',def:'trend',ion:'trend',hyb:'vsepr',lew:'vsepr',mol1:'molemap',stoich:'molemap',pct:'molemap',conc:'dil',boyle:'gas',charles:'gas',ideal:'gas',gcon:'gas',colt:'phase',kexp:'eq',kcalc:'eq',kp:'eq',qk:'eq',lech:'eq',ksp:'ksp',prec:'ksp',common:'ksp',ph:'phs',hyd:'phs',strong:'phs',abth:'phs',titr:'titr',buf:'buf',bufph:'buf',conj:'buf',ox:'redox',agent:'redox',ecell:'cell',nernst:'cell',krate:'kplots',kinit:'kplots',kfirst:'kplots',khalf:'kplots',ksecond:'kplots',kcon:'ea',ocis:'cis',avg:'avg',dalton:'dalton',nmf:'nom',nmw:'nom',oname:'oname',oform:'oform',rxn:'rxn',bal:'bal',isom:'isom',ofg:'fg',otype:'orx'};
 function dgHtml(x){var k=DGMAP[x.t],f=k&&DG[k];if(!f)return'';try{return f()}catch(e){return''}}
 
 home();
